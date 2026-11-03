@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-client
+  template:
+    metadata:
+      labels:
+        app: inventory-client
+    spec:
+      containers:
+        - name: client
+          image: curlimages/curl:8.10.1
+          command:
+            - sh
+            - -c
+            - |
+              while true; do
+                curl -s http://inventory-service:5000/inventory
+                echo
+                sleep 2
+              done
